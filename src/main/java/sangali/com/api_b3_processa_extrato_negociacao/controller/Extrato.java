@@ -9,9 +9,9 @@ import sangali.com.api_b3_processa_extrato_negociacao.entity.ExtratoNegociacao;
 import sangali.com.api_b3_processa_extrato_negociacao.model.ExtratoNegociacaoDTO;
 import sangali.com.api_b3_processa_extrato_negociacao.repository.ExtratoNegociacaoRepository;
 import sangali.com.api_b3_processa_extrato_negociacao.service.ReadExcelFileService;
+import sangali.com.api_b3_processa_extrato_negociacao.service.SplitService;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +22,9 @@ public class Extrato {
     private final ReadExcelFileService realExcelFileService;
 
     private final ExtratoNegociacaoRepository extratoNegociacaoRepository;
+
+    private final SplitService splitService;
+
     @PostMapping(value = "/negociacao")
     @Transactional
     public void cadastrarExtratoNegociacao() throws IOException {
@@ -31,5 +34,14 @@ public class Extrato {
         linhasExcel.forEach( (key, linha) -> {
             extratoNegociacaoRepository.save(new ExtratoNegociacao(linha));
         });
+    }
+
+
+    @PostMapping(value= "/split/b3/processing")
+    @Transactional
+    public void processarSplit(){
+
+        splitService.executarSplitB3();
+
     }
 }
