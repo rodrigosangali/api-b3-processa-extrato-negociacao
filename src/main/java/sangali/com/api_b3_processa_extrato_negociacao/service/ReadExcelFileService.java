@@ -1,5 +1,6 @@
 package sangali.com.api_b3_processa_extrato_negociacao.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.stereotype.Service;
 import sangali.com.api_b3_processa_extrato_negociacao.model.ExtratoNegociacaoDTO;
@@ -18,6 +19,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import sangali.com.api_b3_processa_extrato_negociacao.utils.SHA1HasGenerator;
 
 @Service
+@Slf4j
 public class ReadExcelFileService {
     private static final String EXCEL_DIRECTORY = "D:\\WorkspaceJava\\api-b3-processa-extrato-negociacao\\extrato\\negociacao";
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -63,6 +65,8 @@ public class ReadExcelFileService {
         } catch (IOException e) {
             throw new RuntimeException("Error processing Excel file: " + excelFile.getName(), e);
         }
+
+        log.info("Arquivo {} processado com sucesso", excelFile.getName());
     }
     private File[] getExcelFiles() {
         File directory = new File(ReadExcelFileService.EXCEL_DIRECTORY);
